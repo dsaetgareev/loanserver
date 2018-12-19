@@ -1,4 +1,4 @@
-package ru.devufa.debt.repository.person;
+package ru.devufa.debt.repository.test;
 
 
 import org.junit.Assert;
@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import ru.devufa.debt.entity.Person;
 import ru.devufa.debt.entity.Settings;
 import ru.devufa.debt.repository.AbstractRepositoryTest;
+import ru.devufa.debt.repository.person.PersonRepository;
 
 import java.util.ArrayList;
 

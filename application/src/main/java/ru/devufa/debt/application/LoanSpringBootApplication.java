@@ -8,6 +8,6 @@ import ru.devufa.debt.repository.config.RepositoryConfig;
 public class LoanSpringBootApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(new Class<?>[] {LoanSpringBootApplication.class, RepositoryConfig.class}, args);
+        SpringApplication.run(new Class<?>[] {LoanSpringBootApplication.class}, args);
     }
 }

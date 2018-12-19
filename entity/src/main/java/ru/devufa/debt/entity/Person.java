@@ -23,6 +23,11 @@ public class Person extends EntityWithId {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "settings_id")
     private List<Settings> settings;
+    /*
+        Ожидает ли регистрации участника
+     */
+    @Column
+    private boolean isWaitingForPersonRegistration;
 
     public String getTelephoneNumber() {
         return telephoneNumber;
@@ -78,5 +83,13 @@ public class Person extends EntityWithId {
 
     public void setSettings(List<Settings> settings) {
         this.settings = settings;
+    }
+
+    public boolean isWaitingForPersonRegistration() {
+        return isWaitingForPersonRegistration;
+    }
+
+    public void setWaitingForPersonRegistration(boolean waitingForPersonRegistration) {
+        isWaitingForPersonRegistration = waitingForPersonRegistration;
     }
 }
