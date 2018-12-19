@@ -16,7 +16,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringRunner.class)
-@DataJpaTest(showSql = true)
+@DataJpaTest
 public abstract class AbstractRepositoryTest<T extends EntityWithId> {
 
     protected abstract T generateEntity();

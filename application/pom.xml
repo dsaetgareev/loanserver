@@ -27,10 +27,6 @@
             <groupId>ru.devufa.debt</groupId>
             <artifactId>facade</artifactId>
         </dependency>
-        <dependency>
-            <groupId>ru.devufa.debt</groupId>
-            <artifactId>service</artifactId>
-        </dependency>
     </dependencies>
 
     <build>
