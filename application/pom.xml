@@ -11,7 +11,9 @@
 
     <artifactId>application</artifactId>
     <packaging>jar</packaging>
-
+    <properties>
+        <start-class>ru.devufa.debt.application.LoanSpringBootApplication</start-class>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>ru.devufa.debt</groupId>
@@ -25,9 +27,14 @@
             <groupId>ru.devufa.debt</groupId>
             <artifactId>facade</artifactId>
         </dependency>
-        <dependency>
-            <groupId>ru.devufa.debt</groupId>
-            <artifactId>service</artifactId>
-        </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>

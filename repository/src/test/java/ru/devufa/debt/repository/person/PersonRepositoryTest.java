@@ -1,17 +1,17 @@
 package ru.devufa.debt.repository.person;
 
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.boot.test.context.SpringBootTest;
 import ru.devufa.debt.entity.Person;
 import ru.devufa.debt.entity.Settings;
 import ru.devufa.debt.repository.AbstractRepositoryTest;
 
 import java.util.ArrayList;
 
-@SpringBootTest(classes = {PersonRepository.class})
+
 @EntityScan("ru.devufa.debt.entity")
 public class PersonRepositoryTest extends AbstractRepositoryTest<Person> {
 
