@@ -26,7 +26,7 @@ public abstract class AbstractRepositoryTest<T extends EntityWithId> {
 
     @Test
     public void create() {
-        T saved = repository.save(generateEntity());
+        T saved = repository.saveAndFlush(generateEntity());
         assertNotNull(saved);
         assertNotNull(saved.getId());
         assertNotNull(saved.getCreated());
@@ -35,7 +35,7 @@ public abstract class AbstractRepositoryTest<T extends EntityWithId> {
 
     @Test
     public void read() {
-        T saved = repository.save(generateEntity());
+        T saved = repository.saveAndFlush(generateEntity());
         T one = repository.getOne(saved.getId());
         assertNotNull(one);
         assertEquals(one.getId(), saved.getId());
@@ -44,7 +44,7 @@ public abstract class AbstractRepositoryTest<T extends EntityWithId> {
 
     @Test
     public void update() {
-        T saved = repository.save(generateEntity());
+        T saved = repository.saveAndFlush(generateEntity());
         Date date = new Date();
         saved.setCreated(date);
         repository.saveAndFlush(saved);
