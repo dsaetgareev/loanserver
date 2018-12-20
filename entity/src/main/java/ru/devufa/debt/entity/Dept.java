@@ -39,7 +39,7 @@ public class Dept extends EntityWithId{
     @Column(nullable = false)
     private String comment;
     /*
-        Подтвержден ли займ
+        Статус заема
      */
     @Column(nullable = false)
     private Status status;

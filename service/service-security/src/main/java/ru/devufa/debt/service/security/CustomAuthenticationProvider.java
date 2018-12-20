@@ -17,8 +17,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
 
         if (name.equals("1234") && password.equals("1234")) {//todo проверять в базе данных
 
-            // use the credentials
-            // and authenticate against the third-party system
             return new UsernamePasswordAuthenticationToken(
                     name, password, new ArrayList<>());
         } else {
