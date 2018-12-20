@@ -31,6 +31,10 @@
             <groupId>ru.devufa.debt</groupId>
             <artifactId>facade</artifactId>
         </dependency>
+        <dependency>
+            <groupId>ru.devufa.debt</groupId>
+            <artifactId>service-sms</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
