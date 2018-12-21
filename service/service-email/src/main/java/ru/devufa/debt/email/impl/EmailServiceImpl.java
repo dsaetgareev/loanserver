@@ -1,10 +1,10 @@
-package ru.devufa.debt.impl;
+package ru.devufa.debt.email.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-import ru.devufa.debt.interfaces.EmailService;
+import ru.devufa.debt.email.interfaces.EmailService;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 

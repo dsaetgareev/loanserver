@@ -15,5 +15,6 @@
         <module>service-security</module>
         <module>service-common</module>
         <module>service-sms</module>
+        <module>service-email</module>
     </modules>
 </project>
