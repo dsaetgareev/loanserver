@@ -1,7 +1,7 @@
-package ru.devufa.debt.web;
+package ru.devufa.debt;
 
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class WebConfig {
+public class ServiceConfig {
 }

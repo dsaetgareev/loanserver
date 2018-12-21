@@ -7,8 +7,8 @@ import ru.devufa.debt.entity.Currency;
 import ru.devufa.debt.entity.Dept;
 import ru.devufa.debt.entity.Person;
 import ru.devufa.debt.repository.AbstractRepositoryTest;
-import ru.devufa.debt.repository.common.CurrencyRepository;
-import ru.devufa.debt.repository.person.PersonRepository;
+import ru.devufa.debt.repository.CurrencyRepository;
+import ru.devufa.debt.repository.PersonRepository;
 
 
 @EntityScan("ru.devufa.debt.entity")

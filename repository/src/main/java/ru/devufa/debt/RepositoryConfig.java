@@ -1,9 +1,10 @@
-package ru.devufa.debt.repository.config;
+package ru.devufa.debt;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -19,7 +20,7 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories
-public class RepositoryConfig implements TransactionManagementConfigurer{
+public class RepositoryConfig implements TransactionManagementConfigurer {
 
     @Value("${dataSource.driverClassName}")
     private String driver;
@@ -45,7 +46,7 @@ public class RepositoryConfig implements TransactionManagementConfigurer{
     }
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean configureEntityManagerFactory() {
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactoryBean.setDataSource(dataSource());
         entityManagerFactoryBean.setPackagesToScan("ru.devufa.debt");
