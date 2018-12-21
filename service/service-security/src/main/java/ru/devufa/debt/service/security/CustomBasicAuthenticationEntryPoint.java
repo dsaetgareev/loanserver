@@ -21,7 +21,7 @@ public class CustomBasicAuthenticationEntryPoint extends BasicAuthenticationEntr
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        setRealmName("Baeldung");
+        setRealmName("MoneyGroup");
         super.afterPropertiesSet();
     }
 }

@@ -1,4 +1,4 @@
-package ru.devufa.debt.web;
+package ru.devufa.debt;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

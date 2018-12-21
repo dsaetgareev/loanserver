@@ -10,4 +10,5 @@ import java.util.UUID;
 public interface PersonRepository extends JpaRepository<Person, UUID> {
 
     Person findFirstByTelephoneNumber(String telephoneNumber);
+    Person findFirstByTelephoneNumberAndIsWaitingForPersonRegistrationIsTrue(String telephoneNumber);
 }
