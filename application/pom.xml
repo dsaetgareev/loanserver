@@ -33,6 +33,10 @@
             <groupId>ru.devufa.debt</groupId>
             <artifactId>service-sms</artifactId>
         </dependency>
+        <dependency>
+            <groupId>ru.devufa.debt</groupId>
+            <artifactId>service-currency</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
