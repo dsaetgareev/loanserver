@@ -24,6 +24,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider{
         String name = authentication.getName();
         String password = authentication.getCredentials().toString();
         Person person = personRepository.findFirstByTelephoneNumber(name);
+        if (person == null || person.getPassword() == null) return null;
         if (name.equals(person.getTelephoneNumber()) && passwordEncoder.matches(password, person.getPassword())) {
             return new UsernamePasswordAuthenticationToken(
                     name, password, new ArrayList<>());

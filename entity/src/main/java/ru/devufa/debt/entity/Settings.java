@@ -7,7 +7,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "person_settings")
 public class Settings extends EntityWithId {
-    @Column
+    @Column(unique = true)
     private String key;
     @Column
     private String value;

@@ -3,6 +3,7 @@ package ru.devufa.debt.entity;
 import ru.devufa.debt.entity.common.EntityWithId;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -78,6 +79,9 @@ public class Person extends EntityWithId {
     }
 
     public List<Settings> getSettings() {
+        if (settings == null) {
+            return new ArrayList<>();
+        }
         return settings;
     }
 
