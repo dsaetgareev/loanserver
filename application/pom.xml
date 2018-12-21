@@ -29,6 +29,10 @@
             <groupId>ru.devufa.debt</groupId>
             <artifactId>service-common</artifactId>
         </dependency>
+        <dependency>
+            <groupId>ru.devufa.debt</groupId>
+            <artifactId>service-sms</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
