@@ -1,8 +1,7 @@
 package ru.devufa.debt.sms;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import ru.devufa.debt.sms.config.SMSCConfig;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -11,38 +10,21 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 
 @Service
+//todo провести рефакторинг
 public class SMSCSender {
-
-    @Autowired
-    private SMSCConfig config;
-
-    private String SMSC_LOGIN = config.getSMSC_LOGIN();     // логин клиента
-    private String SMSC_PASSWORD = config.getSMSC_PASSWORD();  // пароль или MD5-хеш пароля в нижнем регистре
-    private boolean SMSC_HTTPS = config.isSMSC_HTTPS();         // использовать HTTPS протокол
-    private String SMSC_CHARSET = config.getSMSC_CHARSET();       // кодировка сообщения: koi8-r, windows-1251 или utf-8 (по умолчанию)
-    private boolean SMSC_DEBUG = config.isSMSC_DEBUG();         // флаг отладки
-    private boolean SMSC_POST = config.isSMSC_POST();         // Использовать метод POST
-
-    public SMSCSender() {
-    }
-
-    public SMSCSender(String login, String password) {
-        SMSC_LOGIN    = login;
-        SMSC_PASSWORD = password;
-    }
-
-    public SMSCSender(String login, String password, String charset) {
-        SMSC_LOGIN    = login;
-        SMSC_PASSWORD = password;
-        SMSC_CHARSET  = charset;
-    }
-
-    public SMSCSender(String login, String password, String charset, boolean debug) {
-        SMSC_LOGIN    = login;
-        SMSC_PASSWORD = password;
-        SMSC_CHARSET  = charset;
-        SMSC_DEBUG    = debug;
-    }
+    private static final String DELIMITER = ",";
+    @Value("${sms.login}")
+    private String SMSC_LOGIN;     // логин клиента
+    @Value("${sms.password}")
+    private String SMSC_PASSWORD; // пароль или MD5-хеш пароля в нижнем регистре
+    @Value("${sms.https}")
+    private boolean SMSC_HTTPS;         // использовать HTTPS протокол
+    @Value("${sms.charset}")
+    private String SMSC_CHARSET;       // кодировка сообщения: koi8-r, windows-1251 или utf-8 (по умолчанию)
+    @Value("${sms.debug}")
+    private boolean SMSC_DEBUG;         // флаг отладки
+    @Value("${sms.post}")
+    private boolean SMSC_POST;         // Использовать метод POST
 
     public String[] sendSms(String phones, String message, int translit, String time, String id, int format, String sender, String query) {
         String[] formats = {"", "flash=1", "push=1", "hlr=1", "bin=1", "bin=2", "ping=1"};
@@ -52,9 +34,9 @@ public class SMSCSender {
             m = SmscSendCmd("send", "cost=3&phones=" + URLEncoder.encode(phones, SMSC_CHARSET)
                     + "&mes=" + URLEncoder.encode(message, SMSC_CHARSET)
                     + "&translit=" + translit + "&id=" + id + (format > 0 ? "&" + formats[format] : "")
-                    + (sender == "" ? "" : "&sender=" + URLEncoder.encode(sender, SMSC_CHARSET))
-                    + (time == "" ? "" : "&time=" + URLEncoder.encode(time, SMSC_CHARSET))
-                    + (query == "" ? "" : "&" + query));
+                    + (sender.equals("") ? "" : "&sender=" + URLEncoder.encode(sender, SMSC_CHARSET))
+                    + (time.equals("") ? "" : "&time=" + URLEncoder.encode(time, SMSC_CHARSET))
+                    + (query.equals("") ? "" : "&" + query));
         }
         catch (UnsupportedEncodingException e) {
 
@@ -109,7 +91,7 @@ public class SMSCSender {
             m = SmscSendCmd("status", "phone=" + URLEncoder.encode(phone, SMSC_CHARSET) + "&id=" + id + "&all=" + all);
 
             if (SMSC_DEBUG) {
-                if (m[1] != "" && Integer.parseInt(m[1]) >= 0) {
+                if (!m[1].equals("") && Integer.parseInt(m[1]) >= 0) {
                     java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(Integer.parseInt(m[1]));
                     System.out.println("Статус SMS = " + m[0]);
                 }
@@ -117,9 +99,9 @@ public class SMSCSender {
                     System.out.println("Ошибка №" + Math.abs(Integer.parseInt(m[1])));
             }
 
-            if (all == 1 && m.length > 9 && (m.length < 14 || m[14] != "HLR")) {
-                tmp = implode(m, ",");
-                m = tmp.split(",", 9);
+            if (all == 1 && m.length > 9 && (m.length < 14 || !m[14].equals("HLR"))) {
+                tmp = implode(m, DELIMITER);
+                m = tmp.split(DELIMITER, 9);
             }
         }
         catch (UnsupportedEncodingException e) {
@@ -146,7 +128,7 @@ public class SMSCSender {
 
     private String[] SmscSendCmd(String cmd, String arg){
         String[] m = {};
-        String ret = ",";
+        String ret = DELIMITER;
 
         try {
             String url = (SMSC_HTTPS ? "https" : "http") + "://smsc.ru/sys/" + cmd +".php?login=" + URLEncoder.encode(SMSC_LOGIN, SMSC_CHARSET)
@@ -159,16 +141,16 @@ public class SMSCSender {
                     Thread.sleep(2000);
                 ret = SmscReadUrl(url);
             }
-            while (ret == "" && ++i < 3);
+            while (ret.equals("") && ++i < 3);
         }
         catch (UnsupportedEncodingException e) {
-
+            //todo обработать исключение
         }
         catch (InterruptedException e) {
-
+            //todo обработать исключение
         }
 
-        return ret.split(",");
+        return ret.split(DELIMITER);
     }
 
     private String SmscReadUrl(String url) {
@@ -210,10 +192,10 @@ public class SMSCSender {
             reader.close();
         }
         catch (MalformedURLException e) { // Неверно урл, протокол...
-
+            //todo обработать исключение
         }
         catch (IOException e) {
-
+            //todo обработать исключение
         }
 
         return line;
