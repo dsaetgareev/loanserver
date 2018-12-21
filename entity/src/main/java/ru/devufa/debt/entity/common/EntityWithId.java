@@ -11,7 +11,7 @@ import java.util.UUID;
 @MappedSuperclass
 public abstract class EntityWithId extends EntityWithoutId {
     @Id
-    @Type(type="uuid-char")
+    //@Type(type="uuid-char")
     @Column(name="id")
     private UUID id;
 

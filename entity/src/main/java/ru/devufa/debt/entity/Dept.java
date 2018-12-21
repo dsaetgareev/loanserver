@@ -26,7 +26,7 @@ public class Dept extends EntityWithId{
         Сумма займа
      */
     @Column(nullable = false)
-    private Integer count;
+    private double count;
     /*
         Валюта
      */
@@ -39,7 +39,7 @@ public class Dept extends EntityWithId{
     @Column(nullable = false)
     private String comment;
     /*
-        Подтвержден ли займ
+        Статус заема
      */
     @Column(nullable = false)
     private Status status;
@@ -66,11 +66,11 @@ public class Dept extends EntityWithId{
         this.borrower = borrower;
     }
 
-    public Integer getCount() {
+    public double getCount() {
         return count;
     }
 
-    public void setCount(Integer count) {
+    public void setCount(double count) {
         this.count = count;
     }
 

@@ -21,7 +21,6 @@
         <module>service</module>
         <module>facade</module>
         <module>application</module>
-        <module>service-currency</module>
     </modules>
 
     <properties>
@@ -53,6 +52,16 @@
             <dependency>
                 <groupId>ru.devufa.debt</groupId>
                 <artifactId>service-currency</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ru.devufa.debt</groupId>
+                <artifactId>service-sms</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ru.devufa.debt</groupId>
+                <artifactId>service-common</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>
