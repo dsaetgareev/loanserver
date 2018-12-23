@@ -38,8 +38,6 @@ public class PersonRepositoryTest extends AbstractRepositoryTest<Person> {
     protected Person generateEntity() {
         Person person = new Person();
         person.setTelephoneNumber(UUID.randomUUID().toString());
-        person.setSettings(new ArrayList<>());
-        person.getSettings().add(new Settings("Language", "ru"));
         return person;
     }
 }

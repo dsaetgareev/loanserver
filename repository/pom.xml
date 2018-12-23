@@ -16,5 +16,9 @@
             <groupId>ru.devufa.debt</groupId>
             <artifactId>entity</artifactId>
         </dependency>
+        <dependency>
+            <groupId>ru.devufa.debt</groupId>
+            <artifactId>service-email</artifactId>
+        </dependency>
     </dependencies>
 </project>

@@ -21,9 +21,6 @@ public class Person extends EntityWithId {
     private String question;
     @Column
     private String answer;
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "settings_id")
-    private List<Settings> settings;
     /*
         Ожидает ли регистрации участника
      */
@@ -76,17 +73,6 @@ public class Person extends EntityWithId {
 
     public void setQuestion(String question) {
         this.question = question;
-    }
-
-    public List<Settings> getSettings() {
-        if (settings == null) {
-            return new ArrayList<>();
-        }
-        return settings;
-    }
-
-    public void setSettings(List<Settings> settings) {
-        this.settings = settings;
     }
 
     public boolean isWaitingForPersonRegistration() {
