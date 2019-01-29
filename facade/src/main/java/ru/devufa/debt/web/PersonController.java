@@ -3,30 +3,36 @@ package ru.devufa.debt.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.devufa.debt.entity.Person;
-import ru.devufa.debt.service.common.ChangePasswordService;
-import ru.devufa.debt.service.common.PersonService;
+import ru.devufa.debt.service.common.impl.ChangePasswordServiceImpl;
+import ru.devufa.debt.service.common.impl.PersonServiceImpl;
 
 @RestController
+@RequestMapping("/person")
 public class PersonController {
 
     @Autowired
-    private PersonService personService;
+    private PersonServiceImpl personService;
 
     @Autowired
-    private ChangePasswordService changePasswordService;
+    private ChangePasswordServiceImpl changePasswordService;
 
-    @PostMapping(path = "/account/register")
-    public Person register(@RequestBody Person person) {
-        return personService.create(person);
+    @RequestMapping(path = "/{code}", method = RequestMethod.POST)
+    public Person register(@RequestBody Person person, @PathVariable(name = "code") String code) {
+        return personService.create(person, code);
+    }
+
+    @RequestMapping(path = "/registerRequest", method = RequestMethod.POST)
+    public void registerRequest(@RequestParam(name = "telephoneNumber") String telephoneNumber) {
+        personService.createRegistrationRequest(telephoneNumber);
     }
 
 
-    @GetMapping(path = "/account/changePasswordRequest")
+    @RequestMapping(path = "/changePassword")
     public String changePasswordRequest(@RequestParam("telephoneNumber") String telephoneNumber) {
         return changePasswordService.changePasswordRequest(telephoneNumber);
     }
 
-    @GetMapping(path = "/account/acceptPasswordRequest")
+    @RequestMapping(path = "/commit")
     public void changePasswordAccept(
             @RequestParam("telephoneNumber") String telephoneNumber,
             @RequestParam("code") String code,

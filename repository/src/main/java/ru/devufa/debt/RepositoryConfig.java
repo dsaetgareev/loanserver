@@ -2,6 +2,7 @@ package ru.devufa.debt;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import org.hibernate.cfg.Environment;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -20,7 +21,7 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories
-public class RepositoryConfig implements TransactionManagementConfigurer {
+public class RepositoryConfig {
 
     @Value("${dataSource.driverClassName}")
     private String driver;
@@ -55,13 +56,13 @@ public class RepositoryConfig implements TransactionManagementConfigurer {
         Properties jpaProperties = new Properties();
         jpaProperties.put(org.hibernate.cfg.Environment.DIALECT, dialect);
         jpaProperties.put(org.hibernate.cfg.Environment.HBM2DDL_AUTO, hbm2ddlAuto);
+        jpaProperties.put(Environment.NON_CONTEXTUAL_LOB_CREATION, true);
         entityManagerFactoryBean.setJpaProperties(jpaProperties);
 
         return entityManagerFactoryBean;
     }
 
-    @Override
-    public PlatformTransactionManager annotationDrivenTransactionManager() {
+    public PlatformTransactionManager  transactionManager() {
         return new JpaTransactionManager();
     }
 }

@@ -8,7 +8,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import ru.devufa.debt.entity.Person;
-import ru.devufa.debt.repository.PersonRepository;
+import ru.devufa.debt.repository.person.PersonRepository;
+import ru.devufa.debt.repository.person.PersonRepositoryService;
 
 import java.util.ArrayList;
 
@@ -16,14 +17,14 @@ import java.util.ArrayList;
 public class CustomAuthenticationProvider implements AuthenticationProvider{
 
     @Autowired
-    private PersonRepository personRepository;
+    private PersonRepositoryService personRepositoryService;
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String name = authentication.getName();
         String password = authentication.getCredentials().toString();
-        Person person = personRepository.findFirstByTelephoneNumber(name);
+        Person person = personRepositoryService.findFirstByTelephoneNumber(name);
         if (person == null || person.getPassword() == null) return null;
         if (name.equals(person.getTelephoneNumber()) && passwordEncoder.matches(password, person.getPassword())) {
             return new UsernamePasswordAuthenticationToken(

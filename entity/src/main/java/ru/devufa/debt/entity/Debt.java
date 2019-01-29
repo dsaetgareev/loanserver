@@ -1,5 +1,6 @@
 package ru.devufa.debt.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import ru.devufa.debt.entity.common.EntityWithId;
 
 import javax.persistence.*;
@@ -9,19 +10,20 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "dept")
-public class Dept extends EntityWithId{
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class Debt extends EntityWithId{
     /*
         Кредитор
      */
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "creditor_id", nullable = false)
-    private Person creditor;
+    @ManyToOne
+    @JoinColumn(name = "initiator_id", nullable = false)
+    private Person initiator;
     /*
         Заемщик
      */
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "borrower_id", nullable = false)
-    private Person borrower;
+    @ManyToOne
+    @JoinColumn(name = "receiver_id", nullable = false)
+    private Person receiver;
     /*
         Сумма займа
      */
@@ -42,28 +44,35 @@ public class Dept extends EntityWithId{
         Статус заема
      */
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Status status;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private DebtType debtType;
 
     @Override
     public void prePersist() {
         super.prePersist();
-        this.status = Status.NEW;
+        if (this.status == null) {
+            this.status = Status.NEW;
+        }
     }
 
-    public Person getCreditor() {
-        return creditor;
+    public Person getInitiator() {
+        return initiator;
     }
 
-    public void setCreditor(Person creditor) {
-        this.creditor = creditor;
+    public void setInitiator(Person initiator) {
+        this.initiator = initiator;
     }
 
-    public Person getBorrower() {
-        return borrower;
+    public Person getReceiver() {
+        return receiver;
     }
 
-    public void setBorrower(Person borrower) {
-        this.borrower = borrower;
+    public void setReceiver(Person receiver) {
+        this.receiver = receiver;
     }
 
     public double getCount() {
@@ -84,6 +93,14 @@ public class Dept extends EntityWithId{
 
     public Currency getCurrency() {
         return currency;
+    }
+
+    public DebtType getDebtType() {
+        return debtType;
+    }
+
+    public void setDebtType(DebtType debtType) {
+        this.debtType = debtType;
     }
 
     public void setCurrency(Currency currency) {

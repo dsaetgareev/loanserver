@@ -4,8 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
-@SpringBootApplication
-@ComponentScan(basePackages = {"ru.devufa.debt"})
+@SpringBootApplication(scanBasePackages = {"ru.devufa.debt"})
 public class LoanSpringBootApplication {
 
     public static void main(String[] args) {

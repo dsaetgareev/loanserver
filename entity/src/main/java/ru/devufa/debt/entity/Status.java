@@ -7,6 +7,8 @@ public enum Status {
     WAITING_FOR_REGISTRATION,
     //Ожидает подтверждения
     WAITING_FOR_ACCEPTING,
+    //Ожидает оплаты
+    WAITING_FOR_PAYMENT,
     //Отказано
     DECLINED,
     //Подтвержден

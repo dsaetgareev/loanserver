@@ -21,5 +21,9 @@
             <groupId>ru.devufa.debt</groupId>
             <artifactId>repository</artifactId>
         </dependency>
+        <dependency>
+            <groupId>ru.devufa.debt</groupId>
+            <artifactId>service-security</artifactId>
+        </dependency>
     </dependencies>
 </project>

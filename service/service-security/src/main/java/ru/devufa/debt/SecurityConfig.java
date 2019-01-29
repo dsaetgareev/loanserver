@@ -16,7 +16,7 @@ import ru.devufa.debt.service.security.CustomAuthenticationProvider;
 import ru.devufa.debt.service.security.CustomBasicAuthenticationEntryPoint;
 
 @Configuration
-@EnableGlobalAuthentication
+@EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -32,7 +32,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         //todo подумать о анннонимной системе
-        http.authorizeRequests()
+        http.csrf().disable()
+            .authorizeRequests()
             .antMatchers("/error").permitAll()
             .anyRequest().authenticated()
                 .and()
@@ -41,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/account/**");
+        web.ignoring().antMatchers("/person/**");
     }
 
     @Bean

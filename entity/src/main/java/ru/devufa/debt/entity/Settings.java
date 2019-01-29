@@ -10,8 +10,9 @@ import javax.persistence.*;
         uniqueConstraints = @UniqueConstraint(columnNames = {"key", "person_id"})
 )
 public class Settings extends EntityWithId {
-    @Column(unique = true)
-    private String key;
+    @Column
+    @Enumerated(EnumType.STRING)
+    private SettingParam key;
     @Column
     private String value;
 
@@ -19,19 +20,24 @@ public class Settings extends EntityWithId {
     @JoinColumn(name = "person_id")
     private Person person;
 
+    public Settings(SettingParam key, String value, Person person) {
+        this(key, value);
+        this.person = person;
+    }
+
     public Settings() {
     }
 
-    public Settings(String key, String value) {
+    public Settings(SettingParam key, String value) {
         this.key = key;
         this.value = value;
     }
 
-    public String getKey() {
+    public SettingParam getKey() {
         return key;
     }
 
-    public void setKey(String key) {
+    public void setKey(SettingParam key) {
         this.key = key;
     }
 

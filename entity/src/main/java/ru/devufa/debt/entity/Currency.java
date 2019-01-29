@@ -13,7 +13,7 @@ public class Currency extends EntityWithId {
     /*
         Имя валюты в которую конвертируем (rub, eur..)
      */
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String currencyName;
 
     public String getCurrencyName() {
