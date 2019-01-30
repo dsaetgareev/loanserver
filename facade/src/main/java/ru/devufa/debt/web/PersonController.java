@@ -32,7 +32,7 @@ public class PersonController {
         return changePasswordService.changePasswordRequest(telephoneNumber);
     }
 
-    @RequestMapping(path = "/commit")
+    @RequestMapping(path = "/commitChangePassword", method = RequestMethod.POST)
     public void changePasswordAccept(
             @RequestParam("telephoneNumber") String telephoneNumber,
             @RequestParam("code") String code,

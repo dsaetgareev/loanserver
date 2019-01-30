@@ -21,6 +21,11 @@ public interface DebtRepository extends JpaRepository<Debt, UUID> {
     @Query("select debt from Debt as debt where debt.debtType=:debtType and debt.status in (:statuses) and (debt.initiator = :person or debt.receiver = :person)")
     List<Debt> findAllDebt(@Param("person") Person person, @Param("debtType") DebtType type, @Param("statuses") Status ...statuses);
 
+    //Все долги
+    @Query("select debt from Debt as debt where debt.status in (:statuses) and ((debt.debtType='DEBT' and debt.initiator=:person) or (debt.debtType='LOAN' and debt.receiver=:person))")
+    List<Debt> findAllDebt(@Param("person") Person person, @Param("statuses") List<Status> statuses);
+    @Query("select debt from Debt as debt where debt.status in (:statuses) and ((debt.debtType='LOAN' and debt.initiator=:person) or (debt.debtType='DEBT' and debt.receiver=:person))")
+    List<Debt> findAllLoan(@Param("person") Person person, @Param("statuses") List<Status> statuses);
     /**
      * Сменить статус на ожидает подтверждение где статус равен ожидает регистрации и инициатор или получатель = person
      * @param person

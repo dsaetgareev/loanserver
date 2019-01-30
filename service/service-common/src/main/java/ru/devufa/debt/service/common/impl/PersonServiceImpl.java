@@ -47,6 +47,7 @@ public class PersonServiceImpl implements PersonService{
             person.setPassword(person.getPassword());
             person.setPassword(passwordEncoder.encode(person.getPassword()));
             personRepositoryService.update(person);
+            settingsRepositoryService.delete(settings.getId());
             debtRepositoryService.wakeUpDebt(person);//Возможно сделать асинхронным
             return person;
         }

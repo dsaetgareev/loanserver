@@ -28,6 +28,16 @@ public class DebtRepositoryServiceImpl extends AbstractRepositoryService<Debt> i
     }
 
     @Override
+    public List<Debt> findAllDebt(Person person, List<Status> statuses) {
+        return debtRepository.findAllDebt(person, statuses);
+    }
+
+    @Override
+    public List<Debt> findAllLoan(Person person, List<Status> statuses) {
+        return debtRepository.findAllLoan(person, statuses);
+    }
+
+    @Override
     @Transactional
     public void wakeUpDebt(Person person) {
         debtRepository.wakeUpDebt(person);

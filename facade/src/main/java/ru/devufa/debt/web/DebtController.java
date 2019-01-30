@@ -7,6 +7,7 @@ import ru.devufa.debt.entity.DebtType;
 import ru.devufa.debt.entity.Status;
 import ru.devufa.debt.service.common.impl.DebtServiceImpl;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -21,8 +22,8 @@ public class DebtController {
         return null;
     }
 
-    @RequestMapping(value = "/{type}", method = RequestMethod.GET)
-    public List<Debt> getList(@PathVariable(name = "type") String type, @RequestParam(name = "statuses", required = false) List<Status> statuses) {
+    @RequestMapping(value = "/list/{type}", method = RequestMethod.GET)
+    public List<Debt> getList(@PathVariable(name = "type") String type, @RequestParam(value = "status", required = false) List<Status> statuses) {
         try {
             DebtType debtType = DebtType.valueOf(type);
             return debtService.findAll(debtType, statuses);
