@@ -26,7 +26,8 @@ public class DebtServiceImpl implements DebtService {
     @Autowired
     private SecurityService securityService;
 
-    public void acceptDebt(String id, boolean isAccepted) {
+    @Override
+    public void accept(String id, boolean isAccepted) {
         Debt debt = debtRepositoryService.read(UUID.fromString(id));
         if (debt == null) {
             throw new RuntimeException("Долго\\Займ не найден");
@@ -35,22 +36,42 @@ public class DebtServiceImpl implements DebtService {
         if (!debt.getReceiver().getId().equals(currentPerson.getId()) || debt.getInitiator().getId().equals(currentPerson.getId())) {
             throw new RuntimeException("У вас нет прав для редактирования долга\\займа " + id);
         }
-        if (debt.getStatus().equals(Status.WAITING_FOR_ACCEPTING) && debt.getReceiver().getId().equals(currentPerson.getId())) {
+        if (debt.getStatus().equals(Status.WAITING_FOR_ACCEPTING)
+                && debt.getOldStatus() != Status.WAITING_FOR_PAYMENT
+                && debt.getReceiver().getId().equals(currentPerson.getId())) {
             debt.setStatus(isAccepted ? Status.WAITING_FOR_PAYMENT : Status.CLOSED);
+            debtRepositoryService.update(debt);
         }
-        //todo подумать куда вынести эту логику
-        if (debt.getStatus().equals(Status.WAITING_FOR_PAYMENT)
-                && debt.getDebtType().equals(DebtType.DEBT) && debt.getReceiver().getId().equals(currentPerson.getId())) {
-            debt.setStatus(isAccepted ? Status.CLOSED : Status.WAITING_FOR_PAYMENT);
-        } else if (debt.getStatus().equals(Status.WAITING_FOR_PAYMENT)
-                && debt.getDebtType().equals(DebtType.LOAN) && debt.getInitiator().getId().equals(currentPerson.getId())) {
-            debt.setStatus(isAccepted ? Status.CLOSED : Status.WAITING_FOR_PAYMENT);
+
+        //Если долг ожидает подтвержения и старый статус "ожидает оплаты"
+        if (debt.getStatus() == Status.WAITING_FOR_ACCEPTING && debt.getOldStatus() == Status.WAITING_FOR_PAYMENT) {
+            //Если тип Кредит и получатель кредитор или тип ЗАЙМ и инициатор кредитор
+            // то проставить подтверждение(или вернуть на этап ожидания подтверждения)
+            if ((debt.getDebtType().equals(DebtType.DEBT) && debt.getReceiver().getId().equals(currentPerson.getId()))
+                    || (debt.getDebtType().equals(DebtType.LOAN) && debt.getInitiator().getId().equals(currentPerson.getId()))) {
+                debt.setOldStatus(null);
+                debt.setStatus(isAccepted ? Status.CLOSED : Status.WAITING_FOR_PAYMENT);
+                debtRepositoryService.update(debt);
+
+            }
         }
         throw new RuntimeException("Вы не имеете права подверждать данный долг\\заем");
     }
 
-    public void payDebt() {
-
+    @Override
+    public void pay(String id) {
+        Debt debt = debtRepositoryService.read(UUID.fromString(id));
+        if (debt == null) {
+            throw new RuntimeException("Долго\\Займ не найден");
+        }
+        Person currentPerson = securityService.getCurrentPerson();
+        if ((debt.getStatus() == Status.WAITING_FOR_PAYMENT
+                && debt.getDebtType() == DebtType.DEBT && debt.getInitiator().getId().equals(currentPerson.getId()))
+                || (debt.getDebtType() == DebtType.LOAN && debt.getReceiver().getId().equals(currentPerson.getId()))) {
+            debt.setOldStatus(debt.getStatus());
+            debt.setStatus(Status.WAITING_FOR_ACCEPTING);
+            debtRepositoryService.update(debt);
+        }
     }
 
 

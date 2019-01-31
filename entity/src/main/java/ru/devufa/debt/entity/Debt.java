@@ -49,6 +49,10 @@ public class Debt extends EntityWithId{
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
+    private Status oldStatus;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private DebtType debtType;
 
     @Override
@@ -113,5 +117,13 @@ public class Debt extends EntityWithId{
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public Status getOldStatus() {
+        return oldStatus;
+    }
+
+    public void setOldStatus(Status oldStatus) {
+        this.oldStatus = oldStatus;
     }
 }
