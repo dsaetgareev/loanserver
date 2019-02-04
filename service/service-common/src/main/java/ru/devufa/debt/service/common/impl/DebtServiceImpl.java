@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import ru.devufa.debt.entity.*;
 import ru.devufa.debt.repository.currency.CurrencyRepositoryService;
 import ru.devufa.debt.repository.debt.DebtRepositoryService;
-import ru.devufa.debt.repository.person.PersonRepositoryService;
 import ru.devufa.debt.service.common.DebtService;
 import ru.devufa.debt.service.common.PersonService;
 import ru.devufa.debt.service.security.SecurityService;
@@ -29,11 +28,11 @@ public class DebtServiceImpl implements DebtService {
     @Override
     public void accept(String id, boolean isAccepted) {
         Debt debt = debtRepositoryService.read(UUID.fromString(id));
-        if (debt == null) {
-            throw new RuntimeException("Долго\\Займ не найден");
+        if (debt == null || debt.getStatus() == Status.WAITING_FOR_REGISTRATION) {
+            throw new RuntimeException("Долго\\Займ не доступен");
         }
         Person currentPerson = securityService.getCurrentPerson();
-        if (!debt.getReceiver().getId().equals(currentPerson.getId()) || debt.getInitiator().getId().equals(currentPerson.getId())) {
+        if (!debt.getReceiver().getId().equals(currentPerson.getId()) && !debt.getInitiator().getId().equals(currentPerson.getId())) {
             throw new RuntimeException("У вас нет прав для редактирования долга\\займа " + id);
         }
         if (debt.getStatus().equals(Status.WAITING_FOR_ACCEPTING)
@@ -41,6 +40,7 @@ public class DebtServiceImpl implements DebtService {
                 && debt.getReceiver().getId().equals(currentPerson.getId())) {
             debt.setStatus(isAccepted ? Status.WAITING_FOR_PAYMENT : Status.CLOSED);
             debtRepositoryService.update(debt);
+            return;
         }
 
         //Если долг ожидает подтвержения и старый статус "ожидает оплаты"
@@ -52,6 +52,7 @@ public class DebtServiceImpl implements DebtService {
                 debt.setOldStatus(null);
                 debt.setStatus(isAccepted ? Status.CLOSED : Status.WAITING_FOR_PAYMENT);
                 debtRepositoryService.update(debt);
+                return;
 
             }
         }
@@ -71,14 +72,16 @@ public class DebtServiceImpl implements DebtService {
             debt.setOldStatus(debt.getStatus());
             debt.setStatus(Status.WAITING_FOR_ACCEPTING);
             debtRepositoryService.update(debt);
+            return;
         }
+        throw new RuntimeException("Ошибка");
     }
 
 
     @Override
     public Debt create(Debt entity) {
         Person initiator = securityService.getCurrentPerson();
-        Person receiver = personService.create(entity.getReceiver().getTelephoneNumber());
+        Person receiver = personService.findOrCreateNotRegistred(entity.getReceiver().getTelephoneNumber());
         if (initiator.getId().equals(receiver.getId())) {
             throw new RuntimeException("Нельзя создавать долг для самого себя");//fixme
         }

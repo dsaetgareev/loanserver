@@ -39,6 +39,10 @@ public class DebtController {
 
     @RequestMapping(path = "/accept/{id}", method = RequestMethod.POST)
     public void accept(@PathVariable String id, @RequestParam boolean isAccepted) {
-        debtService.acceptDebt(id, isAccepted);
+        debtService.accept(id, isAccepted);
+    }
+    @RequestMapping(path = "/pay/{id}", method = RequestMethod.POST)
+    public void pay(@PathVariable String id) {
+        debtService.pay(id);
     }
 }

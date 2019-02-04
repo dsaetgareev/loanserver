@@ -47,7 +47,7 @@ public class Debt extends EntityWithId{
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @Column(nullable = false)
+    @Column
     @Enumerated(EnumType.STRING)
     private Status oldStatus;
 

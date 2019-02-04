@@ -35,7 +35,7 @@ public class PersonServiceImpl implements PersonService{
      * @return созданный пользователь
      */
     @Override
-    public Person create(Person person,String code) {
+    public Person findOrCreateNotRegistred(Person person, String code) {
         Person waitForRegistrationPerson = personRepositoryService.findWaitingForRegistration(person.getTelephoneNumber());
         //Если найдена персона ожидающая регистрацию то переносим все данные в нее и пробуждаем всем долги ожидющие регистрации этой персоны
         Settings settings = settingsRepositoryService.findByPersonAndKey(waitForRegistrationPerson, SettingParam.CREATE_PERSON_CODE);
@@ -66,7 +66,7 @@ public class PersonServiceImpl implements PersonService{
      * @return пользовтеля ожидающего регистрацию
      */
     @Override
-    public Person create(String telephoneNumber) {
+    public Person findOrCreateNotRegistred(String telephoneNumber) {
         Person existPerson = personRepositoryService.findFirstByTelephoneNumber(telephoneNumber);
         if (existPerson == null) {
             Person person = new Person();
@@ -79,7 +79,7 @@ public class PersonServiceImpl implements PersonService{
 
     @Override
     public void createRegistrationRequest(String telephoneNumber) {
-        Person person = create(telephoneNumber);
+        Person person = findOrCreateNotRegistred(telephoneNumber);
         if (person.isWaitingForPersonRegistration()) {
             Random random = new Random();
             String code = String.valueOf(random.nextInt(100000 - 10000) + 10000);

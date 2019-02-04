@@ -18,7 +18,7 @@ public class PersonController {
 
     @RequestMapping(path = "/{code}", method = RequestMethod.POST)
     public Person register(@RequestBody Person person, @PathVariable(name = "code") String code) {
-        return personService.create(person, code);
+        return personService.findOrCreateNotRegistred(person, code);
     }
 
     @RequestMapping(path = "/registerRequest", method = RequestMethod.POST)

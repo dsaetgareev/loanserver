@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.devufa.debt.entity.common.EntityWithId;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public abstract class AbstractRepositoryService<T extends EntityWithId> implements RepositoryService<T>{
@@ -22,7 +23,8 @@ public abstract class AbstractRepositoryService<T extends EntityWithId> implemen
     @Override
     @Transactional(readOnly = true)
     public T read(UUID uuid) {
-        return repository.getOne(uuid);
+        Optional<T> debt = repository.findById(uuid);
+        return debt.orElse(null);
     }
 
     @Override
