@@ -35,7 +35,7 @@ public class PersonServiceImpl implements PersonService{
      * @return созданный пользователь
      */
     @Override
-    public Person findOrCreateNotRegistred(Person person, String code) {
+    public Person create(Person person, String code) {
         Person waitForRegistrationPerson = personRepositoryService.findWaitingForRegistration(person.getTelephoneNumber());
         //Если найдена персона ожидающая регистрацию то переносим все данные в нее и пробуждаем всем долги ожидющие регистрации этой персоны
         Settings settings = settingsRepositoryService.findByPersonAndKey(waitForRegistrationPerson, SettingParam.CREATE_PERSON_CODE);
@@ -66,7 +66,7 @@ public class PersonServiceImpl implements PersonService{
      * @return пользовтеля ожидающего регистрацию
      */
     @Override
-    public Person findOrCreateNotRegistred(String telephoneNumber) {
+    public Person findOrCreateWaitingForRegistration(String telephoneNumber) {
         Person existPerson = personRepositoryService.findFirstByTelephoneNumber(telephoneNumber);
         if (existPerson == null) {
             Person person = new Person();
@@ -79,12 +79,22 @@ public class PersonServiceImpl implements PersonService{
 
     @Override
     public void createRegistrationRequest(String telephoneNumber) {
-        Person person = findOrCreateNotRegistred(telephoneNumber);
+        Person person = findOrCreateWaitingForRegistration(telephoneNumber);
         if (person.isWaitingForPersonRegistration()) {
             Random random = new Random();
             String code = String.valueOf(random.nextInt(100000 - 10000) + 10000);
             settingsRepositoryService.create(new Settings(SettingParam.CREATE_PERSON_CODE, code, person));
             //todo отправить смс
         }
+    }
+
+    @Override
+    public boolean verifyCode(String telephoneNumber, String code) {
+        Person person = personRepositoryService.findFirstByTelephoneNumber(telephoneNumber);
+        if (person == null) {
+            return false;
+        }
+        Settings foundCode = settingsRepositoryService.findByPersonAndKey(person, SettingParam.CREATE_PERSON_CODE);
+        return foundCode != null;
     }
 }

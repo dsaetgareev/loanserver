@@ -81,7 +81,7 @@ public class DebtServiceImpl implements DebtService {
     @Override
     public Debt create(Debt entity) {
         Person initiator = securityService.getCurrentPerson();
-        Person receiver = personService.findOrCreateNotRegistred(entity.getReceiver().getTelephoneNumber());
+        Person receiver = personService.findOrCreateWaitingForRegistration(entity.getReceiver().getTelephoneNumber());
         if (initiator.getId().equals(receiver.getId())) {
             throw new RuntimeException("Нельзя создавать долг для самого себя");//fixme
         }
