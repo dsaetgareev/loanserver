@@ -80,9 +80,11 @@ public class PersonServiceImpl implements PersonService{
     @Override
     public void createRegistrationRequest(String telephoneNumber) {
         Person person = findOrCreateWaitingForRegistration(telephoneNumber);
+        String code = null;
         if (person.isWaitingForPersonRegistration()) {
             Random random = new Random();
-            String code = String.valueOf(random.nextInt(100000 - 10000) + 10000);
+            //пока поставим заглушку номер телефона, для проверки что номер доходит позже раскомментируем
+            code = telephoneNumber;   //String.valueOf(random.nextInt(100000 - 10000) + 10000);
             settingsRepositoryService.create(new Settings(SettingParam.CREATE_PERSON_CODE, code, person));
             //todo отправить смс
         }

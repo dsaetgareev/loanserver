@@ -22,6 +22,11 @@ public class PersonController {
     @Autowired
     private ChangePasswordServiceImpl changePasswordService;
 
+    @RequestMapping(path = "/test", method = RequestMethod.GET)
+    private String test() {
+        return "wrwerwe";
+    }
+
     @RequestMapping(path = "/{code}", method = RequestMethod.POST)
     public PersonDTO register(@RequestBody PersonDTO personDTO, @PathVariable(name = "code") String code) {
         Person person = conversionService.convert(personDTO, Person.class);
