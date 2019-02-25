@@ -97,6 +97,6 @@ public class PersonServiceImpl implements PersonService{
             return false;
         }
         Settings foundCode = settingsRepositoryService.findByPersonAndKey(person, SettingParam.CREATE_PERSON_CODE);
-        return foundCode != null;
+        return foundCode != null && code.equals(foundCode.getValue());
     }
 }

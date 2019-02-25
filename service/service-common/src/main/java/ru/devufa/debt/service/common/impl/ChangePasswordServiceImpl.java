@@ -35,14 +35,17 @@ public class ChangePasswordServiceImpl implements ChangePasswordService{
     @Override
     public void changePassword(String telephoneNumber, String uniqueCode, String newPassword) {
         Person person = personRepositoryService.findFirstByTelephoneNumber(telephoneNumber);
-        if (person == null || person.isWaitingForPersonRegistration()) {
+        if (person == null) {
             throw new RuntimeException();//todo throw exception
         }
         Settings foundSettings = settingsRepositoryService.findByPersonAndKey(person, SettingParam.CHANGE_PASS_CODE);
+        if (foundSettings == null) {
+            foundSettings = settingsRepositoryService.findByPersonAndKey(person, SettingParam.CREATE_PERSON_CODE);
+        }
         if (foundSettings != null && foundSettings.getValue().equals(uniqueCode)) {
             person.setPassword(passwordEncoder.encode(newPassword));
             personRepositoryService.update(person);
-            settingsRepositoryService.delete(foundSettings.getId());
+            //settingsRepositoryService.delete(foundSettings.getId());
             return;
         }
         throw new RuntimeException();

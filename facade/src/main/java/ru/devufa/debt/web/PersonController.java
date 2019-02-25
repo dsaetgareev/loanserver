@@ -24,7 +24,7 @@ public class PersonController {
 
     @RequestMapping(path = "/test", method = RequestMethod.GET)
     private String test() {
-        return "wrwerwe";
+        return "Привет друг!!";
     }
 
     @RequestMapping(path = "/{code}", method = RequestMethod.POST)
